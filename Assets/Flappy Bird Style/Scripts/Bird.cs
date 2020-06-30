@@ -8,7 +8,6 @@ public class Bird : MonoBehaviour
     private bool isDead; //Has the player collided with a wall?
     private Animator anim; //Reference to the Animator component.
     private Rigidbody2D rb2d; //Holds a reference to the Rigidbody2D component of the bird.
-    private Transform transform;
     private float topBorder;
 
     private static readonly int Flap = Animator.StringToHash("Flap");
@@ -18,7 +17,6 @@ public class Bird : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         rb2d = GetComponent<Rigidbody2D>();
-        transform = GetComponent<Transform>();
         topBorder = gameCamera.orthographicSize + gameCamera.transform.position.y -
                     GetComponent<SpriteRenderer>().bounds.size.y;
     }
