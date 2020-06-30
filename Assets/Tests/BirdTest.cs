@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using Flappy_Bird_Style.Scripts;
 using NUnit.Framework;
 using UnityEngine;
@@ -9,28 +8,37 @@ namespace Tests
 {
     public class BirdTest
     {
-        private GameObject birdGameObject;
-        private Rigidbody2D birdRigidbody2D;
+        private GameObject _birdGameObject;
+        private Rigidbody2D _birdRigidbody2D;
 
         [SetUp]
         public void SetUp()
         {
-            birdGameObject = new GameObject();
-            birdRigidbody2D = birdGameObject.AddComponent<Rigidbody2D>();
+            _birdGameObject = new GameObject();
+            _birdRigidbody2D = _birdGameObject.AddComponent<Rigidbody2D>();
         }
 
         [TearDown]
         public void TearDown()
         {
-            Object.Destroy(birdGameObject);
+            Object.Destroy(_birdGameObject);
         }
 
         [UnityTest]
-        public IEnumerator BirdTestWithEnumeratorPasses()
+        public IEnumerator BirdPosition_ShouldNotBypassTopBorder()
         {
-            var birdController = new BirdController(200f, birdRigidbody2D, 5f);
+            var birdController = new BirdController(200f, _birdRigidbody2D, 5f);
             yield return JumpBird(birdController, 10);
-            Assert.GreaterOrEqual(5f, birdRigidbody2D.transform.position.y);
+            Assert.GreaterOrEqual(5f, _birdRigidbody2D.transform.position.y);
+            yield return null;
+        }
+        
+        [UnityTest]
+        public IEnumerator BirdIsDead_WhenBirdDiedCalled()
+        {
+            var birdController = new BirdController(200f, _birdRigidbody2D, 5f);
+            birdController.BirdDied();
+            Assert.True(birdController.IsDead);
             yield return null;
         }
 
@@ -39,8 +47,7 @@ namespace Tests
             for (var i = 0; i < times; i++)
             {
                 birdController.Jump();
-                yield return new WaitForSeconds(0.3f);
-                Debug.Log(birdRigidbody2D.transform.position.y);
+                yield return new WaitForSeconds(0.5f);
             }
         }
     }

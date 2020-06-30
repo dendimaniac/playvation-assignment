@@ -5,9 +5,9 @@ namespace Flappy_Bird_Style.Scripts
     public class BirdController
     {
         private bool _isDead;
-        private float _upForce;
-        private Rigidbody2D _rigidbody2D;
-        private float _topBorder;
+        private readonly float _upForce;
+        private readonly Rigidbody2D _rigidbody2D;
+        private readonly float _topBorder;
 
         public bool IsDead => _isDead;
 
@@ -18,11 +18,19 @@ namespace Flappy_Bird_Style.Scripts
             _topBorder = topBorder;
         }
 
+        public void CheckResetMovement()
+        {
+            if (_rigidbody2D.transform.position.y >= _topBorder)
+            {
+                _rigidbody2D.velocity = Vector2.zero;
+            }
+        }
+
         public void Jump()
         {
-            _rigidbody2D.velocity = Vector2.zero;
-
             if (_rigidbody2D.transform.position.y >= _topBorder) return;
+
+            _rigidbody2D.velocity = Vector2.zero;
 
             _rigidbody2D.AddForce(new Vector2(0, _upForce));
         }
