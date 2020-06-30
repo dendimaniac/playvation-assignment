@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Flappy_Bird_Style.Scripts;
+using UnityEngine;
 
 public class Bird : MonoBehaviour
 {
@@ -6,10 +7,8 @@ public class Bird : MonoBehaviour
     [SerializeField] private Camera gameCamera;
     [SerializeField] private GameControl gameControl;
 
-    private bool isDead;
     private Animator anim;
-    private Rigidbody2D rb2d;
-    private float topBorder;
+    private BirdController birdController;
 
     private static readonly int Flap = Animator.StringToHash("Flap");
     private static readonly int Die = Animator.StringToHash("Die");
@@ -17,14 +16,15 @@ public class Bird : MonoBehaviour
     private void Awake()
     {
         anim = GetComponent<Animator>();
-        rb2d = GetComponent<Rigidbody2D>();
-        topBorder = gameCamera.orthographicSize + gameCamera.transform.position.y -
-                    GetComponent<SpriteRenderer>().bounds.size.y;
+        var rb2d = GetComponent<Rigidbody2D>();
+        var topBorder = gameCamera.orthographicSize + gameCamera.transform.position.y -
+                        GetComponent<SpriteRenderer>().bounds.size.y;
+        birdController = new BirdController(upForce, rb2d, topBorder);
     }
 
     private void Update()
     {
-        if (isDead) return;
+        if (birdController.IsDead) return;
 
         if (!Input.GetMouseButtonDown(0)) return;
 
@@ -34,17 +34,12 @@ public class Bird : MonoBehaviour
     private void Jump()
     {
         anim.SetTrigger(Flap);
-        rb2d.velocity = Vector2.zero;
-
-        if (transform.position.y >= topBorder) return;
-
-        rb2d.AddForce(new Vector2(0, upForce));
+        birdController.Jump();
     }
 
     private void OnCollisionEnter2D()
     {
-        rb2d.velocity = Vector2.zero;
-        isDead = true;
+        birdController.BirdDied();
         anim.SetTrigger(Die);
         gameControl.BirdDied();
     }
