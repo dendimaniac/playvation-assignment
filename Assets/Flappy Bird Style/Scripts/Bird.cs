@@ -1,4 +1,6 @@
-﻿using Flappy_Bird_Style.Scripts;
+﻿using System;
+using System.Collections;
+using Flappy_Bird_Style.Scripts;
 using UnityEngine;
 
 public class Bird : MonoBehaviour
@@ -12,6 +14,8 @@ public class Bird : MonoBehaviour
 
     private static readonly int Flap = Animator.StringToHash("Flap");
     private static readonly int Die = Animator.StringToHash("Die");
+    private static readonly int Immune = Animator.StringToHash("Immune");
+    private static readonly int ImmuneFading = Animator.StringToHash("ImmuneFading");
 
     private void Awake()
     {
@@ -20,6 +24,7 @@ public class Bird : MonoBehaviour
         var topBorder = gameCamera.orthographicSize + gameCamera.transform.position.y -
                         GetComponent<SpriteRenderer>().bounds.size.y;
         _birdController = new BirdController(upForce, rb2d, topBorder);
+        ImmunePowerUp.OnImmunePickedUp += OnStartImmune;
     }
 
     private void Update()
@@ -33,16 +38,66 @@ public class Bird : MonoBehaviour
         Jump();
     }
 
+    private void OnStartImmune(float maxImmuneDuration)
+    {
+        _birdController.IsImmune = true;
+
+        _anim.SetBool(Immune, true);
+        _anim.SetBool(ImmuneFading, false);
+
+        StopAllCoroutines();
+        StartCoroutine(ImmuneCountdown(maxImmuneDuration));
+    }
+
+    private void OnImmuneFading()
+    {
+        if (_anim.GetBool(ImmuneFading)) return;
+
+        _anim.SetBool(Immune, false);
+        _anim.SetBool(ImmuneFading, true);
+    }
+
+    private void OnImmuneEnded()
+    {
+        _birdController.IsImmune = false;
+        _anim.SetBool(Immune, false);
+        _anim.SetBool(ImmuneFading, false);
+    }
+
     private void Jump()
     {
         _anim.SetTrigger(Flap);
         _birdController.Jump();
     }
 
-    private void OnCollisionEnter2D()
+    private void OnCollisionEnter2D(Collision2D other)
     {
+        if (_birdController.IsImmune && other.gameObject.GetComponent<Column>()) return;
+
         _birdController.BirdDied();
         _anim.SetTrigger(Die);
         gameControl.BirdDied();
+    }
+
+    private IEnumerator ImmuneCountdown(float maxImmuneDuration)
+    {
+        var currentTimer = maxImmuneDuration;
+        while (currentTimer > 0f)
+        {
+            currentTimer -= Time.deltaTime;
+            if (currentTimer <= 1f)
+            {
+                OnImmuneFading();
+            }
+
+            yield return null;
+        }
+
+        OnImmuneEnded();
+    }
+
+    private void OnDisable()
+    {
+        ImmunePowerUp.OnImmunePickedUp -= OnStartImmune;
     }
 }

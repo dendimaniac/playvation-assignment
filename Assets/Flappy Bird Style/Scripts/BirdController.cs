@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using UnityEngine;
 
 namespace Flappy_Bird_Style.Scripts
 {
@@ -9,6 +11,7 @@ namespace Flappy_Bird_Style.Scripts
         private readonly Rigidbody2D _rigidbody2D;
         private readonly float _topBorder;
 
+        public bool IsImmune { get; set; }
         public bool IsDead => _isDead;
 
         public BirdController(float upForce, Rigidbody2D rigidbody2D, float topBorder)

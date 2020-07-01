@@ -315,6 +315,10 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5000000, guid: 45a7c5631d9b74a5984dfe39b48e0199, type: 3}
+      propertyPath: m_GravityScale
+      value: 0.66
+      objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 45a7c5631d9b74a5984dfe39b48e0199, type: 3}
       propertyPath: gameCamera
       value: 
@@ -323,6 +327,22 @@ PrefabInstance:
       propertyPath: gameControl
       value: 
       objectReference: {fileID: 1244831760}
+    - target: {fileID: 11400000, guid: 45a7c5631d9b74a5984dfe39b48e0199, type: 3}
+      propertyPath: upForce
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 21200000, guid: 45a7c5631d9b74a5984dfe39b48e0199, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 21200000, guid: 45a7c5631d9b74a5984dfe39b48e0199, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 21200000, guid: 45a7c5631d9b74a5984dfe39b48e0199, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45a7c5631d9b74a5984dfe39b48e0199, type: 3}
 --- !u!1 &772849153
@@ -530,6 +550,7 @@ GameObject:
   - component: {fileID: 1244831761}
   - component: {fileID: 1244831760}
   - component: {fileID: 1244831759}
+  - component: {fileID: 1244831762}
   m_Layer: 0
   m_Name: GameControl
   m_TagString: Untagged
@@ -550,6 +571,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameControl: {fileID: 1244831760}
+  immunePowerUpPool: {fileID: 1244831762}
   columnPrefab: {fileID: 100002, guid: 9ff31c15a0ffe488d81cc242b06dca72, type: 3}
   columnPoolSize: 7
   spawnRate: 4
@@ -584,6 +606,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1244831762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1244831758}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b1150c645b74c129d20441b8ddaa005, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerUpPrefab: {fileID: 7147590472944814629, guid: 9340a704207b85f4bbf63c16c9bc380a,
+    type: 3}
+  powerUpPoolSize: 5
+  spawnRate: 20
+  spawnChance: 0.3
 --- !u!114 &1443192241 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114743079493329658, guid: cc934f51fc632524786844dca51b4475,
@@ -1071,6 +1110,17 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1244831762}
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &1701414012
 MonoBehaviour:

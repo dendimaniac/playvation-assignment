@@ -32,7 +32,7 @@ namespace Tests
             Assert.GreaterOrEqual(5f, _birdRigidbody2D.transform.position.y);
             yield return null;
         }
-        
+
         [UnityTest]
         public IEnumerator BirdIsDead_WhenBirdDiedCalled()
         {
