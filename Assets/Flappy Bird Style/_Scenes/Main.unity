@@ -621,8 +621,8 @@ MonoBehaviour:
   powerUpPrefab: {fileID: 7147590472944814629, guid: 9340a704207b85f4bbf63c16c9bc380a,
     type: 3}
   powerUpPoolSize: 5
-  spawnRate: 3
-  spawnChance: 1
+  spawnRate: 20
+  spawnChance: 0.3
 --- !u!114 &1443192241 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114743079493329658, guid: cc934f51fc632524786844dca51b4475,

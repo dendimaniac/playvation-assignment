@@ -6,9 +6,6 @@ namespace Flappy_Bird_Style.Scripts
 {
     public class BirdController
     {
-        public event Action ImmuneFading;
-        public event Action ImmuneEnded;
-
         private bool _isDead;
         private readonly float _upForce;
         private readonly Rigidbody2D _rigidbody2D;
@@ -45,23 +42,6 @@ namespace Flappy_Bird_Style.Scripts
         {
             _rigidbody2D.velocity = Vector2.zero;
             _isDead = true;
-        }
-
-        public IEnumerator ImmuneCountdown(float maxImmuneDuration)
-        {
-            var currentTimer = maxImmuneDuration;
-            while (currentTimer > 0f)
-            {
-                currentTimer -= Time.deltaTime;
-                if (currentTimer <= 0.5f)
-                {
-                    ImmuneFading?.Invoke();
-                }
-
-                yield return null;
-            }
-
-            ImmuneEnded?.Invoke();
         }
     }
 }

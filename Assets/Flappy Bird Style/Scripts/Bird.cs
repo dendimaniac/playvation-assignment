@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Flappy_Bird_Style.Scripts;
 using UnityEngine;
 
@@ -43,16 +44,17 @@ public class Bird : MonoBehaviour
 
         _anim.SetBool(Immune, true);
         _anim.SetBool(ImmuneFading, false);
-        _birdController.ImmuneFading += OnImmuneFading;
-        _birdController.ImmuneEnded += OnImmuneEnded;
-        StartCoroutine(_birdController.ImmuneCountdown(5f));
+
+        StopAllCoroutines();
+        StartCoroutine(ImmuneCountdown(maxImmuneDuration));
     }
 
     private void OnImmuneFading()
     {
+        if (_anim.GetBool(ImmuneFading)) return;
+
         _anim.SetBool(Immune, false);
         _anim.SetBool(ImmuneFading, true);
-        _birdController.ImmuneFading -= OnImmuneFading;
     }
 
     private void OnImmuneEnded()
@@ -60,7 +62,6 @@ public class Bird : MonoBehaviour
         _birdController.IsImmune = false;
         _anim.SetBool(Immune, false);
         _anim.SetBool(ImmuneFading, false);
-        _birdController.ImmuneEnded -= OnImmuneEnded;
     }
 
     private void Jump()
@@ -69,19 +70,34 @@ public class Bird : MonoBehaviour
         _birdController.Jump();
     }
 
-    private void OnCollisionEnter2D()
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        if (_birdController.IsImmune) return;
+        if (_birdController.IsImmune && other.gameObject.GetComponent<Column>()) return;
 
         _birdController.BirdDied();
         _anim.SetTrigger(Die);
         gameControl.BirdDied();
     }
 
+    private IEnumerator ImmuneCountdown(float maxImmuneDuration)
+    {
+        var currentTimer = maxImmuneDuration;
+        while (currentTimer > 0f)
+        {
+            currentTimer -= Time.deltaTime;
+            if (currentTimer <= 1f)
+            {
+                OnImmuneFading();
+            }
+
+            yield return null;
+        }
+
+        OnImmuneEnded();
+    }
+
     private void OnDisable()
     {
-        _birdController.ImmuneFading -= OnImmuneFading;
-        _birdController.ImmuneEnded -= OnImmuneEnded;
-        ImmunePowerUp.OnImmunePickedUp += OnStartImmune;
+        ImmunePowerUp.OnImmunePickedUp -= OnStartImmune;
     }
 }

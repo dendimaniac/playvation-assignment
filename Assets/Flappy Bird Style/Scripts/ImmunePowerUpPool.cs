@@ -19,12 +19,13 @@ namespace Flappy_Bird_Style.Scripts
 
         private void Awake()
         {
-            _timeSinceLastSpawned = 0f;
+            _timeSinceLastSpawned = spawnRate;
 
             _powerUps = new GameObject[powerUpPoolSize];
             for (var i = 0; i < powerUpPoolSize; i++)
             {
                 _powerUps[i] = Instantiate(powerUpPrefab, _objectPoolPosition, Quaternion.identity);
+                _powerUps[i].SetActive(false);
             }
         }
 
@@ -37,9 +38,11 @@ namespace Flappy_Bird_Style.Scripts
         {
             if (_timeSinceLastSpawned < spawnRate) return;
 
-            _timeSinceLastSpawned = 0f;
+            var chance = Random.Range(0f, 1f);
+            Debug.Log(chance);
+            if (chance > spawnChance) return;
 
-            if (Random.Range(0f, 1f) > spawnChance) return;
+            _timeSinceLastSpawned = 0f;
 
             _powerUps[_currentPowerUp].SetActive(true);
             _powerUps[_currentPowerUp].transform.position = spawnPosition;

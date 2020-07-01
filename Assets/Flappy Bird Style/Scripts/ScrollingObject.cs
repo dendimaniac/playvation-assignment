@@ -16,7 +16,7 @@ public class ScrollingObject : MonoBehaviour
         _rigidbody2D = GetComponent<Rigidbody2D>();
     }
 
-    private void Start()
+    private void OnEnable()
     {
         _rigidbody2D.velocity = new Vector2(gameControl.ScrollSpeed, 0);
     }
