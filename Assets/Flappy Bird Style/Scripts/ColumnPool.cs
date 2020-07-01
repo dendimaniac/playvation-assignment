@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using Flappy_Bird_Style.Scripts;
+using UnityEngine;
 
 public class ColumnPool : MonoBehaviour
 {
     [SerializeField] private GameControl gameControl;
+    [SerializeField] private ImmunePowerUpPool immunePowerUpPool;
     [Space]
     [SerializeField] private GameObject columnPrefab;
     [SerializeField] private int columnPoolSize = 5;
@@ -39,7 +41,10 @@ public class ColumnPool : MonoBehaviour
 
         float spawnYPosition = Random.Range(columnMin, columnMax);
 
-        _columns[_currentColumn].transform.position = new Vector2(SpawnXPosition, spawnYPosition);
+        var spawnPosition = new Vector2(SpawnXPosition, spawnYPosition);
+
+        immunePowerUpPool.CheckSpawnPowerUp(spawnPosition);
+        _columns[_currentColumn].transform.position = spawnPosition;
 
         _currentColumn++;
 
