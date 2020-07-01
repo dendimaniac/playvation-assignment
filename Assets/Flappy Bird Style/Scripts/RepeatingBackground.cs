@@ -1,29 +1,27 @@
-﻿using UnityEngine;
+﻿using Flappy_Bird_Style.Scripts;
+using Flappy_Bird_Style.Scripts.Interfaces;
+using UnityEngine;
 
-public class RepeatingBackground : MonoBehaviour
+public class RepeatingBackground : MonoBehaviour, IRepeatingBackground
 {
-    private float _groundHorizontalLength;
-    private Transform _transform;
+    private RepeatingBackgroundController _controller;
+
+    public Vector3 Position
+    {
+        get => transform.position;
+        set => transform.position = value;
+    }
+    public float GroundHorizontalLength { get; private set; }
 
     private void Awake()
     {
-        _transform = transform;
         var groundCollider = GetComponent<BoxCollider2D>();
-        _groundHorizontalLength = groundCollider.size.x;
+        GroundHorizontalLength = groundCollider.size.x;
+        _controller = new RepeatingBackgroundController(this);
     }
 
     private void Update()
     {
-        if (transform.position.x < -_groundHorizontalLength)
-        {
-            RepositionBackground();
-        }
-    }
-
-    private void RepositionBackground()
-    {
-        var groundOffSet = new Vector2(_groundHorizontalLength * 2f, 0);
-
-        _transform.position = (Vector2) _transform.position + groundOffSet;
+        _controller.CheckRepositionBackground();
     }
 }
