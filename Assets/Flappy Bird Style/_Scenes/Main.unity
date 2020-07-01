@@ -549,6 +549,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb9db8485ccb24efebb0303a66c6a577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameControl: {fileID: 1244831760}
   columnPrefab: {fileID: 100002, guid: 9ff31c15a0ffe488d81cc242b06dca72, type: 3}
   columnPoolSize: 7
   spawnRate: 4
@@ -567,8 +568,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreText: {fileID: 2129455699}
-  gameOvertext: {fileID: 433713201}
-  gameOver: 0
+  gameOverText: {fileID: 433713201}
   scrollSpeed: -1.5
 --- !u!4 &1244831761
 Transform:
@@ -869,11 +869,21 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114512323737305882, guid: cc934f51fc632524786844dca51b4475,
+        type: 3}
+      propertyPath: gameControl
+      value: 
+      objectReference: {fileID: 1244831760}
     - target: {fileID: 114743079493329658, guid: cc934f51fc632524786844dca51b4475,
         type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114743079493329658, guid: cc934f51fc632524786844dca51b4475,
+        type: 3}
+      propertyPath: gameControl
+      value: 
+      objectReference: {fileID: 1244831760}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc934f51fc632524786844dca51b4475, type: 3}
 --- !u!1 &1589367426 stripped

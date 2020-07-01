@@ -1,60 +1,51 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class ColumnPool : MonoBehaviour 
+public class ColumnPool : MonoBehaviour
 {
-	public GameObject columnPrefab;									//The column game object.
-	public int columnPoolSize = 5;									//How many columns to keep on standby.
-	public float spawnRate = 3f;									//How quickly columns spawn.
-	public float columnMin = -1f;									//Minimum y value of the column position.
-	public float columnMax = 3.5f;									//Maximum y value of the column position.
+    [SerializeField] private GameControl gameControl;
+    [Space]
+    [SerializeField] private GameObject columnPrefab;
+    [SerializeField] private int columnPoolSize = 5;
+    [SerializeField] private float spawnRate = 3f;
+    [SerializeField] private float columnMin = -1f;
+    [SerializeField] private float columnMax = 3.5f;
 
-	private GameObject[] columns;									//Collection of pooled columns.
-	private int currentColumn = 0;									//Index of the current column in the collection.
+    private GameObject[] _columns;
+    private int _currentColumn;
 
-	private Vector2 objectPoolPosition = new Vector2 (-15,-25);		//A holding position for our unused columns offscreen.
-	private float spawnXPosition = 10f;
+    private readonly Vector2 _objectPoolPosition = new Vector2(-15, -25);
+    private const float SpawnXPosition = 10f;
+    private float _timeSinceLastSpawned;
 
-	private float timeSinceLastSpawned;
+    private void Awake()
+    {
+        _timeSinceLastSpawned = 0f;
 
-
-	void Start()
-	{
-		timeSinceLastSpawned = 0f;
-
-		//Initialize the columns collection.
-		columns = new GameObject[columnPoolSize];
-		//Loop through the collection... 
-		for(int i = 0; i < columnPoolSize; i++)
-		{
-			//...and create the individual columns.
-			columns[i] = (GameObject)Instantiate(columnPrefab, objectPoolPosition, Quaternion.identity);
-		}
-	}
+        _columns = new GameObject[columnPoolSize];
+        for (var i = 0; i < columnPoolSize; i++)
+        {
+            _columns[i] = Instantiate(columnPrefab, _objectPoolPosition, Quaternion.identity);
+        }
+    }
 
 
-	//This spawns columns as long as the game is not over.
-	void Update()
-	{
-		timeSinceLastSpawned += Time.deltaTime;
+    private void Update()
+    {
+        _timeSinceLastSpawned += Time.deltaTime;
 
-		if (GameControl.instance.gameOver == false && timeSinceLastSpawned >= spawnRate) 
-		{	
-			timeSinceLastSpawned = 0f;
+        if (gameControl.GameOver || !(_timeSinceLastSpawned >= spawnRate)) return;
 
-			//Set a random y position for the column
-			float spawnYPosition = Random.Range(columnMin, columnMax);
+        _timeSinceLastSpawned = 0f;
 
-			//...then set the current column to that position.
-			columns[currentColumn].transform.position = new Vector2(spawnXPosition, spawnYPosition);
+        float spawnYPosition = Random.Range(columnMin, columnMax);
 
-			//Increase the value of currentColumn. If the new size is too big, set it back to zero
-			currentColumn ++;
+        _columns[_currentColumn].transform.position = new Vector2(SpawnXPosition, spawnYPosition);
 
-			if (currentColumn >= columnPoolSize) 
-			{
-				currentColumn = 0;
-			}
-		}
-	}
+        _currentColumn++;
+
+        if (_currentColumn >= columnPoolSize)
+        {
+            _currentColumn = 0;
+        }
+    }
 }
