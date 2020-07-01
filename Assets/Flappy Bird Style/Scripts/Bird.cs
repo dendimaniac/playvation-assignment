@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Bird : MonoBehaviour
 {
-    [SerializeField] private float upForce;
+    [SerializeField] private float upForce = 200;
     [SerializeField] private Camera gameCamera;
     [SerializeField] private GameControl gameControl;
 
