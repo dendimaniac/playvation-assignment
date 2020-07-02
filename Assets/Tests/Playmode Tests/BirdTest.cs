@@ -25,6 +25,16 @@ namespace Tests.Playmode_Tests
         }
 
         [UnityTest]
+        public IEnumerator BirdVerticalPosition_ShouldIncreaseWhenJump()
+        {
+            var initVerticalPosition = _birdGameObject.transform.position.y;
+            var birdController = new BirdController(200f, _birdRigidbody2D, 5f);
+            yield return JumpBird(birdController, 5);
+            Assert.Less(initVerticalPosition, _birdRigidbody2D.transform.position.y);
+            yield return null;
+        }
+
+        [UnityTest]
         public IEnumerator BirdPosition_ShouldNotBypassTopBorder()
         {
             var birdController = new BirdController(200f, _birdRigidbody2D, 5f);
