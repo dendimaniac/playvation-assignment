@@ -8,21 +8,21 @@ namespace GameObjectPools
         [SerializeField] protected int prefabPoolSize = 3;
         [SerializeField] protected float spawnRate = 3f;
 
-        protected GameObject[] SpawnedArray;
-        protected int CurrentSpawnIndex;
+        private GameObject[] _spawnedArray;
+        private int _currentSpawnIndex;
 
-        protected readonly Vector2 ObjectPoolPosition = new Vector2(-15, -35);
+        private readonly Vector2 _objectPoolPosition = new Vector2(-15, -35);
         protected float TimeSinceLastSpawned;
 
-        private void Awake()
+        protected virtual void Awake()
         {
             TimeSinceLastSpawned = spawnRate;
 
-            SpawnedArray = new GameObject[prefabPoolSize];
+            _spawnedArray = new GameObject[prefabPoolSize];
             for (var i = 0; i < prefabPoolSize; i++)
             {
-                SpawnedArray[i] = Instantiate(prefab, ObjectPoolPosition, Quaternion.identity);
-                SpawnedArray[i].SetActive(false);
+                _spawnedArray[i] = Instantiate(prefab, _objectPoolPosition, Quaternion.identity);
+                _spawnedArray[i].SetActive(false);
             }
         }
 
@@ -33,17 +33,17 @@ namespace GameObjectPools
 
         protected void MoveObjectToNewPosition(Vector2 spawnPosition)
         {
-            SpawnedArray[CurrentSpawnIndex].SetActive(true);
-            SpawnedArray[CurrentSpawnIndex].transform.position = spawnPosition;
+            _spawnedArray[_currentSpawnIndex].SetActive(true);
+            _spawnedArray[_currentSpawnIndex].transform.position = spawnPosition;
         }
 
         protected void IncreaseCurrentSpawnIndex()
         {
-            CurrentSpawnIndex++;
+            _currentSpawnIndex++;
 
-            if (CurrentSpawnIndex >= prefabPoolSize)
+            if (_currentSpawnIndex >= prefabPoolSize)
             {
-                CurrentSpawnIndex = 0;
+                _currentSpawnIndex = 0;
             }
         }
     }
