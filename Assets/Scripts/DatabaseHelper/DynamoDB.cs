@@ -35,12 +35,7 @@ namespace DatabaseHelper
                 if (result.Exception != null || result.Result == null)
                 {
                     var player = CreatePlayer(username, highScore);
-                    _context.SaveAsync(player, dbResult =>
-                    {
-                        if (dbResult.Exception != null) return;
-
-                        Debug.Log("Successfully added highscore record");
-                    });
+                    SavePlayerHighScore(player);
                     return;
                 }
 
@@ -48,13 +43,17 @@ namespace DatabaseHelper
                 if (highScore <= dbPlayer.HighScore) return;
 
                 dbPlayer.HighScore = highScore;
-                _context.SaveAsync(dbPlayer, dynamoDbResult =>
-                {
-                    if (dynamoDbResult.Exception != null) return;
+                SavePlayerHighScore(dbPlayer);
+            });
+        }
 
-                    OnHighScoreUpdated?.Invoke(highScore);
-                    Debug.Log("Successfully updated new highscore");
-                });
+        private void SavePlayerHighScore(Player player)
+        {
+            _context.SaveAsync(player, dbResult =>
+            {
+                if (dbResult.Exception != null) return;
+
+                OnHighScoreUpdated?.Invoke(player.HighScore);
             });
         }
 
