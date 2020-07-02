@@ -9,6 +9,8 @@ namespace DatabaseHelper
 {
     public class DynamoDB : MonoBehaviour
     {
+        public event Action<int> OnHighScoreUpdated;
+
         [SerializeField] private string identityPoolId;
 
         private const string Uid = "UID";
@@ -50,6 +52,7 @@ namespace DatabaseHelper
                 {
                     if (dynamoDbResult.Exception != null) return;
 
+                    OnHighScoreUpdated?.Invoke(highScore);
                     Debug.Log("Successfully updated new highscore");
                 });
             });
