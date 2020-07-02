@@ -3,57 +3,36 @@ using UnityEngine;
 
 namespace GameObjectPools
 {
-    public class ColumnPool : MonoBehaviour
+    public class ColumnPool : BasePool
     {
         [SerializeField] private GameControl gameControl;
         [SerializeField] private ImmunePowerUpPool immunePowerUpPool;
-        [Space]
-        [SerializeField] private GameObject columnPrefab;
-        [SerializeField] private int columnPoolSize = 5;
-        [SerializeField] private float spawnRate = 3f;
         [SerializeField] private float columnMin = -1f;
         [SerializeField] private float columnMax = 3.5f;
 
-        private GameObject[] _columns;
-        private int _currentColumn;
-
-        private readonly Vector2 _objectPoolPosition = new Vector2(-15, -25);
         private const float SpawnXPosition = 10f;
-        private float _timeSinceLastSpawned;
 
-        private void Awake()
+
+        protected override void Update()
         {
-            _timeSinceLastSpawned = 0f;
+            base.Update();
 
-            _columns = new GameObject[columnPoolSize];
-            for (var i = 0; i < columnPoolSize; i++)
-            {
-                _columns[i] = Instantiate(columnPrefab, _objectPoolPosition, Quaternion.identity);
-            }
+            if (gameControl.GameOver || !(TimeSinceLastSpawned >= spawnRate)) return;
+
+            Spawn();
         }
 
-
-        private void Update()
+        private void Spawn()
         {
-            _timeSinceLastSpawned += Time.deltaTime;
+            TimeSinceLastSpawned = 0f;
 
-            if (gameControl.GameOver || !(_timeSinceLastSpawned >= spawnRate)) return;
-
-            _timeSinceLastSpawned = 0f;
-
-            float spawnYPosition = Random.Range(columnMin, columnMax);
-
+            var spawnYPosition = Random.Range(columnMin, columnMax);
             var spawnPosition = new Vector2(SpawnXPosition, spawnYPosition);
 
             immunePowerUpPool.CheckSpawnPowerUp(spawnPosition);
-            _columns[_currentColumn].transform.position = spawnPosition;
+            MoveObjectToNewPosition(spawnPosition);
 
-            _currentColumn++;
-
-            if (_currentColumn >= columnPoolSize)
-            {
-                _currentColumn = 0;
-            }
+            IncreaseCurrentSpawnIndex();
         }
     }
 }

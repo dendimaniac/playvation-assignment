@@ -614,11 +614,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb9db8485ccb24efebb0303a66c6a577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prefab: {fileID: 100002, guid: 9ff31c15a0ffe488d81cc242b06dca72, type: 3}
+  prefabPoolSize: 7
+  spawnRate: 4
   gameControl: {fileID: 1244831760}
   immunePowerUpPool: {fileID: 1244831762}
-  columnPrefab: {fileID: 100002, guid: 9ff31c15a0ffe488d81cc242b06dca72, type: 3}
-  columnPoolSize: 7
-  spawnRate: 4
   columnMin: -1
   columnMax: 3.5
 --- !u!114 &1244831760
@@ -664,9 +664,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b1150c645b74c129d20441b8ddaa005, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerUpPrefab: {fileID: 7147590472944814629, guid: 9340a704207b85f4bbf63c16c9bc380a,
-    type: 3}
-  powerUpPoolSize: 5
+  prefab: {fileID: 7147590472944814629, guid: 9340a704207b85f4bbf63c16c9bc380a, type: 3}
+  prefabPoolSize: 3
   spawnRate: 20
   spawnChance: 0.3
 --- !u!1 &1386009412
