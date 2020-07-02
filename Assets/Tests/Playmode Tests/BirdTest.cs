@@ -1,10 +1,10 @@
 ﻿using System.Collections;
-using Flappy_Bird_Style.Scripts;
+using Core;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace Tests
+namespace Tests.Playmode_Tests
 {
     public class BirdTest
     {
