@@ -1,13 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Flappy_Bird_Style.Scripts;
-using Flappy_Bird_Style.Scripts.Interfaces;
+﻿using NSubstitute;
 using NUnit.Framework;
+using RepeatingBackground;
 using UnityEngine;
-using NSubstitute;
-using UnityEngine.TestTools;
 
-namespace Tests
+namespace Tests.Editmode_Tests
 {
     public class RepeatingBackgroundTest
     {
