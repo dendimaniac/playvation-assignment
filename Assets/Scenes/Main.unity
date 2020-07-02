@@ -726,8 +726,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'High score: 0'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: cd3ff53d5802f8d4899c719af2460c1d, type: 2}
+  m_sharedMaterial: {fileID: 6625686506282714872, guid: cd3ff53d5802f8d4899c719af2460c1d,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
