@@ -633,6 +633,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4850255a45ab5e9448b29fef77f1a2f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dynamoDb: {fileID: 994242466}
   scoreText: {fileID: 2129455699}
   gameOverText: {fileID: 433713201}
   scrollSpeed: -1.5

@@ -11,6 +11,7 @@ namespace Flappy_Bird_Style.Scripts.DatabaseHelper
     {
         [SerializeField] private string identityPoolId;
 
+        private const string Uid = "UID";
         private CognitoAWSCredentials _credentials;
         private AmazonDynamoDBClient _client;
         private DynamoDBContext _context;
@@ -25,16 +26,41 @@ namespace Flappy_Bird_Style.Scripts.DatabaseHelper
             _context = new DynamoDBContext(_client);
         }
 
-        private void PostHighscore(int highScore)
+        public void PostHighscore(string username, int highScore)
         {
-            var player = new Player
-                {PlayerID = Guid.NewGuid().ToString(), Username = "Quan Dao", HighScore = highScore};
-            _context.SaveAsync(player, result =>
+            _context.LoadAsync<Player>(PlayerPrefs.GetString(Uid), result =>
             {
-                if (result.Exception != null) return;
+                if (result.Exception != null || result.Result == null)
+                {
+                    var player = CreatePlayer(username, highScore);
+                    _context.SaveAsync(player, dbResult =>
+                    {
+                        if (dbResult.Exception != null) return;
 
-                Debug.Log("Successfully added highscore record");
+                        Debug.Log("Successfully added highscore record");
+                    });
+                    return;
+                }
+
+                var dbPlayer = result.Result;
+                if (highScore <= dbPlayer.HighScore) return;
+
+                dbPlayer.HighScore = highScore;
+                _context.SaveAsync(dbPlayer, dynamoDbResult =>
+                {
+                    if (dynamoDbResult.Exception != null) return;
+
+                    Debug.Log("Successfully updated new highscore");
+                });
             });
+        }
+
+        private Player CreatePlayer(string username, int highScore)
+        {
+            var playerId = Guid.NewGuid().ToString();
+            PlayerPrefs.SetString(Uid, playerId);
+            return new Player
+                {PlayerID = playerId, Username = username, HighScore = highScore};
         }
     }
 }

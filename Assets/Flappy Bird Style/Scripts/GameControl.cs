@@ -1,9 +1,13 @@
-﻿using UnityEngine;
+﻿using Flappy_Bird_Style.Scripts;
+using Flappy_Bird_Style.Scripts.DatabaseHelper;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameControl : MonoBehaviour
 {
+    [SerializeField] private DynamoDB dynamoDb;
+    [Space]
     [SerializeField] private Text scoreText;
     [SerializeField] private GameObject gameOverText;
     [SerializeField] private float scrollSpeed = -1.5f;
@@ -34,5 +38,6 @@ public class GameControl : MonoBehaviour
     {
         gameOverText.SetActive(true);
         _gameOver = true;
+        dynamoDb.PostHighscore("Quan Dao", _score);
     }
 }
